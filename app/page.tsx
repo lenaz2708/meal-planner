@@ -159,9 +159,9 @@ export default function MealPlanner() {
           },
         })}
       </Script>
-      <div className="container mx-auto p-4">
-        <div className="flex justify-between items-center mb-4 md:flex-row flex-col gap-2">
-          <h1 className="text-2xl font-bold">Weekly Meal Planner</h1>
+      <div className="container mx-auto p-3">
+        <div className="flex justify-between items-center mb-2 md:flex-row flex-col gap-2">
+          <h1 className="text-2xl font-bold text-teal-600">Weekly Meal Planner</h1>
           <div className="flex gap-2">
             <Button variant="outline" onClick={clearLocalStorage}>
               Clear Local Storage
@@ -169,7 +169,7 @@ export default function MealPlanner() {
             <Button onClick={resetToInitialState}>Reset</Button>
           </div>
         </div>
-        <p className="mb-4 text-sm text-gray-600">Note: All default meals are representative of two servings.</p>
+        <p className="mb-2 text-sm text-gray-600">Note: All default meals are representative of two servings.</p>
         {/* <div className="flex items-center space-x-2 mb-4">
           {Object.values(dietIcons).map((diet) => {
             const bgColor = `bg-${diet.color}`;
@@ -185,81 +185,15 @@ export default function MealPlanner() {
             );
           })}
         </div> */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>All Meals</CardTitle>
-            </CardHeader>
-            <CardContent className="w-full">
-              <ScrollArea className="h-[300px] w-full">
-                {allMeals.map((meal) => {
-                  return (
-                    <div key={meal.id} className="flex justify-between items-center mb-2 w-full">
-                      <Button variant="ghost" size="sm" onClick={() => openMealDetails(meal)} className={meal.isUserAdded ? "text-blue-400" : "" + " whitespace-normal text-left"}>
-                        {meal.name}
-                        {meal.diet?.map((dietType) => {
-                          return (
-                            <span key={dietType} title={dietIcons[dietType].text}>
-                              {dietIcons[dietType].icon}
-                            </span>
-                          );
-                        })}
-                      </Button>
-                      <Button onClick={() => addMeal(meal)} disabled={selectedMeals.some((m) => m.id === meal.id)} className={meal.isUserAdded ? "bg-blue-400 hover:bg-blue-500" : ""}>
-                        Add
-                      </Button>
-                    </div>
-                  );
-                })}
-              </ScrollArea>
-              <div className="mt-4 space-y-2">
-                <div className="flex items-center justify-between flex-wrap gap-2">
-                  <div className="flex items-center space-x-2">
-                    <Input id="randomCount" type="number" value={randomMealsCount} onChange={(e) => setRandomMealsCount(Number(e.target.value))} min={1} max={allMeals.length} className="w-20" />
-                    <Button onClick={randomizeMeals}>Randomise Meals</Button>
-                  </div>
-                  <AddMealModal onMealAdded={handleMealAdded} />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Selected Meals</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ScrollArea className="h-[300px]">
-                {selectedMeals.map((meal) => (
-                  <div key={meal.id} className="flex justify-between items-center mb-2">
-                    <Button variant="ghost" onClick={() => openMealDetails(meal)} className={meal.isUserAdded ? "text-blue-400" : "" + " whitespace-normal text-left"}>
-                      {meal.name}
-                      {meal.diet?.map((dietType) => (
-                        <span key={dietType} title={dietIcons[dietType].text}>
-                          {dietIcons[dietType].icon}
-                        </span>
-                      ))}
-                    </Button>
-                    <Button variant="destructive" onClick={() => removeMeal(meal.id)}>
-                      Remove
-                    </Button>
-                  </div>
-                ))}
-              </ScrollArea>
-              <div className="mt-4">
-                <Button onClick={planWeek}>Plan Week</Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card className="md:col-span-3">
             <CardHeader>
               <div className="flex justify-between items-center">
                 <CardTitle>Week Plan</CardTitle>
               </div>
             </CardHeader>
             <CardContent>
-              <ScrollArea className="h-[300px]">
+              <ScrollArea className="h-[180px]">
                 {DAYS_OF_WEEK.map((day) => (
                   <div key={day} className="mb-2">
                     <strong>{day}:</strong>{" "}
@@ -306,10 +240,76 @@ export default function MealPlanner() {
 
           <Card>
             <CardHeader>
+              <CardTitle>All Meals</CardTitle>
+            </CardHeader>
+            <CardContent className="w-full">
+              <ScrollArea className="h-[200px] w-full">
+                {allMeals.map((meal) => {
+                  return (
+                    <div key={meal.id} className="flex justify-between items-center mb-2 w-full">
+                      <Button variant="ghost" size="sm" onClick={() => openMealDetails(meal)} className={meal.isUserAdded ? "text-blue-400" : "" + " whitespace-normal text-left"}>
+                        {meal.name}
+                        {meal.diet?.map((dietType) => {
+                          return (
+                            <span key={dietType} title={dietIcons[dietType].text}>
+                              {dietIcons[dietType].icon}
+                            </span>
+                          );
+                        })}
+                      </Button>
+                      <Button onClick={() => addMeal(meal)} disabled={selectedMeals.some((m) => m.id === meal.id)} className={meal.isUserAdded ? "bg-blue-400 hover:bg-blue-500" : ""}>
+                        Add
+                      </Button>
+                    </div>
+                  );
+                })}
+              </ScrollArea>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <div className="flex items-center space-x-2">
+                    <Input id="randomCount" type="number" value={randomMealsCount} onChange={(e) => setRandomMealsCount(Number(e.target.value))} min={1} max={allMeals.length} className="w-20" />
+                    <Button onClick={randomizeMeals}>Randomise Meals</Button>
+                  </div>
+                  <AddMealModal onMealAdded={handleMealAdded} />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Selected Meals</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ScrollArea className="h-[200px]">
+                {selectedMeals.map((meal) => (
+                  <div key={meal.id} className="flex justify-between items-center mb-2">
+                    <Button variant="ghost" onClick={() => openMealDetails(meal)} className={meal.isUserAdded ? "text-blue-400" : "" + " whitespace-normal text-left"}>
+                      {meal.name}
+                      {meal.diet?.map((dietType) => (
+                        <span key={dietType} title={dietIcons[dietType].text}>
+                          {dietIcons[dietType].icon}
+                        </span>
+                      ))}
+                    </Button>
+                    <Button variant="destructive" onClick={() => removeMeal(meal.id)}>
+                      Remove
+                    </Button>
+                  </div>
+                ))}
+              </ScrollArea>
+              <div className="mt-4">
+                <Button onClick={planWeek}>Plan Week</Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
               <CardTitle>Ingredients Needed</CardTitle>
             </CardHeader>
             <CardContent>
-              <ScrollArea className="h-[300px]">
+              <ScrollArea className="h-[200px]">
                 {Object.entries(totalIngredients).map(([mealName, ingredients]) => (
                   <div key={mealName} className="mb-4">
                     <h3 className="font-semibold">
