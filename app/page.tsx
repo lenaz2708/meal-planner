@@ -25,6 +25,7 @@ export default function MealPlanner() {
   const [isMealDetailsOpen, setIsMealDetailsOpen] = useState(false);
 
   useEffect(() => {
+    // Restore the user's meals, selections, and weekly plan from local storage on page load.
     const savedUserMeals = localStorage.getItem("userMeals");
     const savedSelectedMeals = localStorage.getItem("selectedMeals");
     const savedWeekPlan = localStorage.getItem("weekPlan");
@@ -74,6 +75,7 @@ export default function MealPlanner() {
   };
 
   const planWeek = () => {
+    // Randomly assign the selected meals across the seven days of the week.
     if (selectedMeals.length < DAYS_OF_WEEK.length) {
       toast.error("Please select at least 7 meals before planning the week.");
       return;
@@ -126,6 +128,7 @@ export default function MealPlanner() {
   const allMeals = [...staticMeals, ...userMeals];
 
   const totalIngredients = Object.values(weekPlan).reduce((acc, meal) => {
+    // Build the ingredients list from the meals that ended up in the weekly plan.
     // const servings = meal.servings || 1;
     meal.ingredients.forEach((ingredient) => {
       if (!acc[meal.name]) {
@@ -309,7 +312,14 @@ export default function MealPlanner() {
               <ScrollArea className="h-[300px]">
                 {Object.entries(totalIngredients).map(([mealName, ingredients]) => (
                   <div key={mealName} className="mb-4">
-                    <h3 className="font-semibold">{mealName}</h3>
+                    <h3 className="font-semibold">
+                      {mealName}
+                      {Object.values(weekPlan).find(m => m.name === mealName)?.servings && (
+                        <span className="text-gray-400 text-sm ml-2">
+                          (на {Object.values(weekPlan).find(m => m.name === mealName)?.servings} порции)
+                        </span>
+                      )}
+                    </h3>
                     <ul>
                       {ingredients.map((ingredient, index) => (
                         <li key={index} className="flex items-center gap-2">
