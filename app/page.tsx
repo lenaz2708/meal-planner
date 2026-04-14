@@ -316,7 +316,7 @@ export default function MealPlanner() {
                       {mealName}
                       {Object.values(weekPlan).find(m => m.name === mealName)?.servings && (
                         <span className="text-gray-400 text-sm ml-2">
-                          (на {Object.values(weekPlan).find(m => m.name === mealName)?.servings} порции)
+                          (serves {Object.values(weekPlan).find(m => m.name === mealName)?.servings})
                         </span>
                       )}
                     </h3>
